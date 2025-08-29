@@ -15,3 +15,4 @@ classifier = pipeline('sentiment-analysis')
 type (classifier)
 
 classifier('I love you')
+classifier(['I love you', 'I hate you'])
