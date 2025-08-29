@@ -16,3 +16,12 @@ type (classifier)
 
 classifier('I love you')
 classifier(['I love you', 'I hate you'])
+
+customer_reviews = pd.read_csv('customers-100.csv')
+customer_reviews.head(10)
+
+airline_tweets = pd.read_csv('tweets.csv')
+airline_tweets.head(10)
+
+df = airline_tweets[['text', 'airline_sentiment']]
+df.head(10)
