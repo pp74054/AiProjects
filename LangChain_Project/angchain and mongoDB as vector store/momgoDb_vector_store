@@ -1,0 +1,49 @@
+import os
+
+from langchain_openai import OpenAIEmbeddings
+
+from langchain_community.vectorstores import MongoDBAtlasVectorSearch
+
+from pymongo import MongoClient
+
+from langchain_community.vectorstores import MongoDBAtlasVectorSearch
+
+# Retrieve environment variables for sensitive information
+
+OPENAI_API_KEY = "<OPEN_AI_KEY>"
+if not OPENAI_API_KEY:
+    raise ValueError("The OPENAI_API_KEY environment variable is not set.")
+
+ATLAS_CONNECTION_STRING = (
+    "<MONGO_URI>"
+)
+if not ATLAS_CONNECTION_STRING:
+    raise ValueError("The ATLAS_CONNECTION_STRING environment variable is not set.")
+
+# Set the OPENAI_API_KEY in the environment
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+DB_NAME = "<DB_NAME>"
+COLLECTION_NAME = "<COLLECTION_NAME>"
+INDEX = "<VECTOR_INDEX>"
+
+client = MongoClient(ATLAS_CONNECTION_STRING)
+collection = client[DB_NAME][COLLECTION_NAME]
+embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+vectorStore = vector_search = MongoDBAtlasVectorSearch.from_connection_string(
+    ATLAS_CONNECTION_STRING,
+    DB_NAME + "." + COLLECTION_NAME,
+    OpenAIEmbeddings(disallowed_special=()),
+    index_name=INDEX,
+)
+
+
+def query_data(query):
+    # Convert question to vector using OpenAI embeddings
+    # Perform Atlas Vector Search using Langchain's vectorStore
+    # similarity_search returns MongoDB documents most similar to the query
+
+    docs = vectorStore.similarity_search(query, K=1)
+    print("as_output: ", docs)
+
+query_data("offering related schema")
