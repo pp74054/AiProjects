@@ -40,20 +40,20 @@ predictions = classifier(texts)
 predictions [:5]
 
 probs = [pred['score'] if pred ['label'].startswith('P') else 1 - pred['score'] for pred in predictions]
-preds = np.array ([1 if pred['label'].startswith('P') else 0 for pred in predictions])
-print (f"Accuracy: {round(np.mean(df['target'] == preds) *100, 2)} %") 
+preds = np.array([1 if pred['label'].startswith('P') else 0 for pred in predictions])
+print(f"Accuracy: {round(np.mean(df['target'] == preds) * 100, 2)} %")
 
 cm = confusion_matrix(df['target'], preds, normalize='true')
-def plot_confusion_matrix(confusion_matrix, labels):
+def plot_confusion_matrix(cm, labels):
     plt.figure(figsize=(8, 6))
     sns.set(font_scale=1.4)
-    sns.heatmap(confusion_matrix, annot=True, fmt = 'g', cmap='Blues', xticklabels=labels, yticklabels=labels)
+    sns.heatmap(cm, annot=True, fmt = 'g', cmap='Blues', xticklabels=labels, yticklabels=labels)
     plt.title("Confusion Matrix")
     plt.xlabel('Predicted')
     plt.ylabel('Actual')
     plt.show()
-    
-    plot_confusion_matrix(cm, ['negative', 'positive'])
+
+plot_confusion_matrix(cm, ['negative', 'positive'])
 
 
 
