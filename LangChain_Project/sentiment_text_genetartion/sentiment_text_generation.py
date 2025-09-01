@@ -42,6 +42,7 @@ predictions [:5]
 
 prods = [pred['score'] if pred ['label'].startswith('P') else 1 - pred['score'] for pred in predictions]
 preds = np.array ([1 if pred['label'].startswith('P') else 0 for pred in predictions])
+print (f"Accuracy: {round(np.mean(df['target'] == preds)*100,2)}%") 
 
 
 
