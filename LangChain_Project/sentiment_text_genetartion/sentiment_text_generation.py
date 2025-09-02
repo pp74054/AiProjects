@@ -81,6 +81,15 @@ import textwrap
 def wrap(x):
     return textwrap.fill(x, replace_whitespace=False, fix_sentence_endings=True, width=70)
 
+out = gen(lines[0], max_length=30)
+print(wrap(out[0]['generated_text']))
+
+
+prompt = "transformers have a wide varient of applications in nlp "
+out = gen (prompt, max_length=100, num_return_sequences=3)
+print (wrap(out[0]['generated_text']))
+
+
 
 
 
