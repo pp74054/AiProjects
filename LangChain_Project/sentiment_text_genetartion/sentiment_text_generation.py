@@ -75,6 +75,12 @@ lines[0]
 
 gen(lines[0], max_length=20)
 
+gen(lines[0], max_length=30, num_return_sequences=5)
+
+import textwrap
+def wrap(x):
+    return textwrap.fill(x, replace_whitespace=False, fix_sentence_endings=True, width=70)
+
 
 
 
