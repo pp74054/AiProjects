@@ -18,5 +18,42 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 settings.llm = OpenAI(model = "gpt-3.5-turbo")
 settings.embed_model = OpenAIEmbedding(model="text-embedding-ada-002")
 
+from llama_index.core import SummaryIndex, VectorStoreIndex
+summary_index = SummaryIndex(nodes)
+vector_index = VectorStoreIndex(nodes)
+
+summary_query_engine = summary_index.as_query_engine(
+    response_mode="tree_summarize",
+    use_async=True,
+)
+vector_query_engine = vector_index.as_query_engine()
+
+from llama_index.core.tools import QueryEngineTool
+summary_tool = QueryEngineTool.from_defaults (
+    query_engine=summary_query_engine,
+    description=("useful for when you need to answer questions about the Metagpt paper."), 
+)
+
+vector_tool = QueryEngineTool.from_defaults (
+    query_engine=vector_query_engine,
+    description = ("useful for when you need to answer questions about the Metagpt paper."),
+)
+
+from llama_index.core.query_engine.router_query_engine import RouterQueryEngine
+from llama_index.core.selectors import LLMMultiSelector
+
+query_engine = RouterQueryEngine(
+    selector=LLMMultiSelector.from_defaults(),
+    query_engine_tools=[
+        summary_tool,
+        vector_tool
+    ],
+)
+
+response = query_engine.query("What is the summary of the document?")
+
+print(str(response))
+
+
 
 
