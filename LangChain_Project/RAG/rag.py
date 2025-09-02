@@ -54,6 +54,16 @@ response = query_engine.query("What is the summary of the document?")
 
 print(str(response))
 
+print (len(response.source_nodes))
+
+response = query_engine.query(
+    "How does Metagpt work?"
+)
+
+print(str(response))
+
+from utils import get_router_equery_engine
+query_engine = get_router_equery_engine("metagpt.pdf ")
 
 
 
