@@ -53,8 +53,27 @@ def plot_confusion_matrix(cm, labels):
     plt.ylabel('Actual')
     plt.show()
 
+
+
 plot_confusion_matrix(cm, ['negative', 'positive'])
 
+print (f"roc auc_score: {roc_auc_score(df['target'], probs)}")
+
+poems = pd.read_csv('robert_frost.csv')
+poems.head(10)
+content = poems['Content'].dropna().tolist()
+lines = [ ]
+for poem in content:
+    for line in poem.split('\n'):
+        lines.append(line.strip())
+            
+    lines = [line for line in lines if len(line) > 0]
+    lines[:5]
+
+gen = pipeline('text-generation')
+lines[0]
+
+gen(lines[0], max_length=20)
 
 
 
