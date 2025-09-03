@@ -129,9 +129,9 @@ for n in response.source_nodes:
 from typing import List
 from llama_index.core.vector_stores import FilterCondition
 def vector_query(
-    query = str,
+    query: str,
     page_numbers: List[str]
-)-> str:
+) -> str:
     """Perform a vector query with metadata filtering."""
     
     metedata_dicts = [
