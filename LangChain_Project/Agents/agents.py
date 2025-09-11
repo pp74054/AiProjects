@@ -1,10 +1,12 @@
-from helpers import get_openai_api_key
+# Update the import path if helpers.py is in a different directory, for example:
+# from Agents.helpers import get_openai_api_key
+from .helpers import get_openai_api_key
 OPENAI_API_KEY = get_openai_api_key()
 
 import nest_asyncio
 nest_asyncio.apply()
 
-from utils import get_doc_tools
+from .utils import get_doc_tools
 vetcor_tool, summary_tool = get_doc_tools("metagpt.pdf, metagpt")
 
 from llama_index.llms.openai import OpenAI
@@ -19,45 +21,45 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
 )
 Agent = AgentRunner(agent_worker)
 
-response = agent.quary("Tell me about Metagpt.")
+response = Agent.quary("Tell me about Metagpt.")
 
 print (response.source_nodes[0].get_content(metadata_mode="all"))
 
-response = agent.chat("How does Metagpt work?")
+response = Agent.chat("How does Metagpt work?")
 
-response = agent.chat("tell me the results over one of the above datasets.")
+response = Agent.chat("tell me the results over one of the above datasets.")
 
-agent_worker = functionCallingAgentWorker.from_tools(
-    [vector_tool, summary_tool],
+agent_worker = FunctionCallingAgentWorker.from_tools(
+    [vetcor_tool, summary_tool],
     llm=llm,
     vetcor=True
 )
 Agent = AgentRunner(agent_worker)
 
-task = agent.create_task(
+task = Agent.create_task(
     "tell me about the agent roles in MetaGPT."
     "and then how they communicate with each other?"
 )
 
-step_output = agent.run_step(task.task_id)
+step_output = Agent.run_step(task.task_id)
 
-complete_steps = agent.get_completed_steps(task.task_id)
-print(f"Num completed for task: {task.task_id}: {len(complete_steps)}"
-print(complete_steps[0].output.sources[0].raw_output))
+complete_steps = Agent.get_completed_steps(task.task_id)
+print(f"Num completed for task: {task.task_id}: {len(complete_steps)}")
+print(complete_steps[0].output.sources[0].raw_output)
 
-upcoming_steps = agent.get_upcoming_steps(task.task_id)
+upcoming_steps = Agent.get_upcoming_steps(task.task_id)
 print (f"Num upcoming for task: {task.task_id}: {len(upcoming_steps)}")
 upcoming_steps[0]
 
-step_output = agent.run_step(task.task_id, input = "What about how agents share information?")
+step_output = Agent.run_step(task.task_id, input = "What about how agents share information?")
 
-step_output = agent.run_step(task.task_id)
+step_output = Agent.run_step(task.task_id)
 print(step_output.is_last)
 
-response = agent.finalize_response(task.task_id)
+response = Agent.finalize_response(task.task_id)
 print (str(response))
 
-from helper import get_openai_api_key
+from .helpers import get_openai_api_key
 OPENAI_API_KEY = get_openai_api_key()
 
 import nest_asyncio
@@ -87,7 +89,7 @@ for paper in papers:
 
 initial_tools = [t for paper in papers for t in paper_to_tools_dict[paper]]
 from llama_index.llms.openai import OpenAI 
-llm = openAI(model="gpt-3.5-turbo")
+llm = OpenAI(model="gpt-3.5-turbo")
 
 len(initial_tools)
 
